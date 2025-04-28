@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pixel Vásárlás - Mentéssel és Zoommal</title>
+<title>Pixel Vásárlás - 32x32 50px-es blokkokkal</title>
 <style>
 :root {
 --beige: #efdbc4;
@@ -42,6 +42,7 @@ gap: 2px;
 background-color: var(--light-green);
 padding: 10px;
 border-radius: 10px;
+box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 overflow: auto;
 max-width: 100%;
 transform-origin: top left;
@@ -120,10 +121,10 @@ color: #666;
 <body>
 <div id="loading">Betöltés...</div>
 
-<h1>Vásárolj egy 10x10 pixeles blokkot!</h1>
-<p>Kattints egy szabad blokkra, vagy nézd meg a foglalásokat!</p>
+<h1>Vásárolj egy blokkot!</h1>
+<p>Kattints egy szabad blokkra, majd foglald le a saját linkedet!</p>
 
-<div id="controls">
+<div id="controls"> 
 <button onclick="zoomIn()">Nagyítás</button>
 <button onclick="zoomOut()">Kicsinyítés</button>
 <button onclick="resetZoom()">Alaphelyzet</button>
@@ -163,7 +164,7 @@ document.getElementById('loading').style.display = 'none';
 
 document.addEventListener('DOMContentLoaded', () => {
 const grid = document.getElementById('pixel-grid');
-const total = 100 * 100;
+const total = 32 * 32; // 1024 pixel
 const savedPixels = JSON.parse(localStorage.getItem('pixels') || '{}');
 let selected = null;
 
