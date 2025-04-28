@@ -1,4 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
+const remainingCount = document.getElementById('remaining-count');
+function updateRemaining() {
+const total = 32 * 32;
+const reserved = Object.keys(savedPixels).length;
+remainingCount.textContent = total - reserved;
+}
+
+// az oldal betöltésekor frissítjük
+updateRemaining();  
 const pixels = document.querySelectorAll('.pixel:not(.taken)');
 const form = document.getElementById('buy-form');
 const linkInput = form.querySelector('input[type="url"]:first-of-type');
