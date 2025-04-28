@@ -76,3 +76,11 @@ updateRemaining('Blokk foglalva!');
 alert('Ez csak egy DEMO vásárlás! Az űrlap adatai: \nLink: ' + linkInput.value + '\nKép: ' + imageInput.value);
 });
 });
+function openPopup(content) {
+document.getElementById('popup-content').innerHTML = content;
+document.getElementById('popup').style.display = 'flex';
+}
+
+function closePopup() {
+document.getElementById('popup').style.display = 'none';
+}
