@@ -36,8 +36,8 @@ text-align: center;
 
 #pixel-grid {
 display: grid;
-grid-template-columns: repeat(10, 50px);
-grid-template-rows: repeat(10, 50px);
+grid-template-columns: repeat(32, 50px);
+grid-template-rows: repeat(32, 50px);
 gap: 2px;
 background-color: var(--light-green);
 padding: 10px;
@@ -124,6 +124,18 @@ color: #666;
 <h1>Vásárolj egy blokkot!</h1>
 <p>Kattints egy szabad blokkra, majd foglald le a saját linkedet!</p>
 
+<div id="controls">
+<div id="remaining" style="margin: 15px 0; font-size: 20px; font-weight: bold; color: #555;">
+Szabad blokkok: <span id="remaining-count">1024</span>
+</div>
+<div id="progress-container" style="width: 100%; max-width: 600px; background-color: #e2e5d8; border-radius: 10px; overflow: hidden; margin: 10px 0;">
+<div id="progress-bar" style="height: 20px; width: 100%; background-color: #c69870; transition: width 0.5s, background-color 0.5s;"></div>
+</div>
+<button onclick="zoomIn()">Nagyítás</button>
+<button onclick="zoomOut()">Kicsinyítés</button>
+<button onclick="resetZoom()">Alaphelyzet</button>
+</div>
+
 <div id="pixel-grid"></div>
 
 <form id="buy-form">
@@ -134,13 +146,31 @@ color: #666;
 </form>
 
 <script>
+let zoomLevel = 1;
+
+function zoomIn() {
+zoomLevel += 0.2;
+document.getElementById('pixel-grid').style.transform = `scale(${zoomLevel})`;
+}
+
+function zoomOut() {
+zoomLevel -= 0.2;
+if (zoomLevel < 0.4) zoomLevel = 0.4;
+document.getElementById('pixel-grid').style.transform = `scale(${zoomLevel})`;
+}
+
+function resetZoom() {
+zoomLevel = 1;
+document.getElementById('pixel-grid').style.transform = 'scale(1)';
+}
+
 window.addEventListener('load', () => {
 document.getElementById('loading').style.display = 'none';
 });
 
 document.addEventListener('DOMContentLoaded', () => {
 const grid = document.getElementById('pixel-grid');
-const total = 10 * 10; // 100 pixel
+const total = 15 * 20; // 300 pixel
 const savedPixels = JSON.parse(localStorage.getItem('pixels') || '{}');
 let selected = null;
 
