@@ -36,8 +36,8 @@ text-align: center;
 
 #pixel-grid {
 display: grid;
-grid-template-columns: repeat(32, 50px);
-grid-template-rows: repeat(32, 50px);
+grid-template-columns: repeat(10, 50px);
+grid-template-rows: repeat(10, 50px);
 gap: 2px;
 background-color: var(--light-green);
 padding: 10px;
@@ -140,24 +140,6 @@ color: #666;
 </form>
 
 <script>
-let zoomLevel = 1;
-
-function zoomIn() {
-zoomLevel += 0.2;
-document.getElementById('pixel-grid').style.transform = `scale(${zoomLevel})`;
-}
-
-function zoomOut() {
-zoomLevel -= 0.2;
-if (zoomLevel < 0.4) zoomLevel = 0.4;
-document.getElementById('pixel-grid').style.transform = `scale(${zoomLevel})`;
-}
-
-function resetZoom() {
-zoomLevel = 1;
-document.getElementById('pixel-grid').style.transform = 'scale(1)';
-}
-
 window.addEventListener('load', () => {
 document.getElementById('loading').style.display = 'none';
 });
