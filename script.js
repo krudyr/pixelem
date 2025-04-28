@@ -34,6 +34,7 @@ linkInput.focus();
 
 form.addEventListener('submit', (e) => {
 e.preventDefault();
+updateRemaining('Blokk foglalva!');
 alert('Ez csak egy DEMO vásárlás! Az űrlap adatai: \nLink: ' + linkInput.value + '\nKép: ' + imageInput.value);
 });
 });
