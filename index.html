@@ -184,7 +184,15 @@ div.style.backgroundImage = `url(${savedPixels[i].image})`;
 div.style.backgroundSize = "cover";
 div.title = savedPixels[i].link;
 div.style.cursor = "pointer";
-div.onclick = () => window.open(savedPixels[i].link, "_blank");
+div.onclick = () => {
+const pixelData = savedPixels[i];
+const content = `
+<h2>Blokk adatai</h2>
+<img src="${pixelData.image}" alt="Kép" style="max-width:100%; border-radius:10px;">
+<p><strong>Link:</strong> <a href="${pixelData.link}" target="_blank">${pixelData.link}</a></p>
+`;
+openPopup(content);
+};
 } else {
 div.addEventListener('click', () => {
 if (selected) selected.classList.remove('selected');
