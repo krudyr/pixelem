@@ -20,6 +20,25 @@ pixel.addEventListener('click', () => {
 // Ha már volt korábban kiválasztott pixel, távolítsuk el a highlight-ot
 if (selectedPixel) {
 selectedPixel.classList.remove('selected');
+const progressBar = document.getElementById('progress-bar');
+
+function updateRemaining() {
+const total = 32 * 32;
+const reserved = Object.keys(savedPixels).length;
+const free = total - reserved;
+const percent = (free / total) * 100;
+
+remainingCount.textContent = free;
+progressBar.style.width = `${percent}%`;
+
+if (free <= 10) {
+progressBar.style.backgroundColor = 'red';
+} else if (free <= 50) {
+progressBar.style.backgroundColor = 'orange';
+} else {
+progressBar.style.backgroundColor = '#c69870'; // eredeti szín
+}
+
 }
 
 // Jelöld ki az új pixelt
