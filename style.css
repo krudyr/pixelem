@@ -1,0 +1,139 @@
+:root {
+--beige: #efdbc4;
+--light-green: #e2e5d8;
+--mid-green: #adb795;
+--brown: #c69870;
+--white: #ffffff;
+}
+
+body {
+margin: 0;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+background-color: var(--beige);
+color: #4a4a4a;
+text-align: center;
+}
+
+header {
+padding: 2rem 1rem 1rem;
+}
+
+header h1 {
+margin-bottom: 0.5rem;
+color: #5c4433;
+}
+
+header p {
+margin-top: 0;
+color: #5c4433;
+font-weight: 500;
+}
+
+main {
+display: flex;
+flex-direction: column;
+align-items: center;
+margin: 2rem auto;
+}
+
+#pixel-grid {
+display: grid;
+grid-template-columns: repeat(10, 20px);
+grid-template-rows: repeat(10, 20px);
+gap: 2px;
+background-color: var(--light-green);
+padding: 10px;
+border-radius: 10px;
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.pixel {
+width: 20px;
+height: 20px;
+background-color: var(--white);
+border: 1px solid var(--light-green);
+cursor: pointer;
+transition: background-color 0.2s;
+}
+
+.pixel:hover {
+background-color: var(--mid-green);
+}
+
+.pixel.taken {
+background-color: var(--mid-green);
+cursor: not-allowed;
+}
+
+form#buy-form {
+background: var(--white);
+margin-top: 2rem;
+padding: 20px;
+width: 90%;
+max-width: 400px;
+border-radius: 10px;
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+form#buy-form h2 {
+margin-bottom: 20px;
+color: #5c4433;
+}
+
+form#buy-form input {
+width: 100%;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid var(--light-green);
+border-radius: 5px;
+background-color: var(--light-green);
+}
+
+form#buy-form button {
+width: 100%;
+padding: 12px;
+background-color: var(--brown);
+color: var(--white);
+border: none;
+border-radius: 5px;
+font-size: 16px;
+font-weight: bold;
+cursor: pointer;
+transition: background-color 0.3s;
+}
+
+form#buy-form button:hover {
+background-color: #a26e49;
+}
+
+form#buy-form a {
+display: block;
+margin-top: 10px;
+color: var(--brown);
+text-decoration: none;
+font-weight: 500;
+}
+
+form#buy-form a:hover {
+text-decoration: underline;
+}
+.pixel.selected {
+background-color: var(--brown) !important;
+animation: pulse 0.6s ease-out;
+border: 2px solid var(--mid-green);
+}
+
+@keyframes pulse {
+0% {
+transform: scale(1);
+background-color: var(--brown);
+}
+50% {
+transform: scale(1.2);
+background-color: #b07d5d; /* Kicsit világosabb barna */
+}
+100% {
+transform: scale(1);
+background-color: var(--brown);
+}
+}
