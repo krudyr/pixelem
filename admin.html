@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Felület</title>
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<header>
+<h1>Admin Felület</h1>
+</header>
+
+<main>
+<section>
+<h2>Beérkezett vásárlások</h2>
+<table id="orders">
+<thead>
+<tr>
+<th>#</th>
+<th>Weboldal</th>
+<th>Blokkok száma</th>
+<th>Jóváhagyás</th>
+</tr>
+</thead>
+<tbody>
+<!-- Dinamikus tartalom -->
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>Statisztika</h2>
+<p>Összes eladott blokk: <span id="totalSold">0</span></p>
+<p>Összbevétel (Ft): <span id="totalRevenue">0</span></p>
+</section>
+</main>
+
+<script src="admin.js"></script>
+</body>
+</html>
