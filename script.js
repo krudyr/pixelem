@@ -1,86 +1,51 @@
-document.addEventListener('DOMContentLoaded', () => {
-const remainingCount = document.getElementById('remaining-count');
-function updateRemaining() {
-const total = 32 * 32;
-const reserved = Object.keys(savedPixels).length;
-remainingCount.textContent = total - reserved;
+const grid = document.getElementById('pixelGrid');
+const availableBlockCounter = document.getElementById('availableBlocks');
+let availableBlocks = 2250;
+let selectedBlocks = [];
+
+for (let i = 0; i < 50 * 45; i++) {
+const pixel = document.createElement('div');
+pixel.classList.add('pixel');
+pixel.dataset.index = i;
+pixel.addEventListener('click', () => togglePixel(pixel));
+grid.appendChild(pixel);
 }
 
-// az oldal betöltésekor frissítjük
-updateRemaining();  
-const progressBar = document.getElementById('progress-bar');
-
-function updateRemaining() {
-const total = 32 * 32;
-const reserved = Object.keys(savedPixels).length;
-const free = total - reserved;
-const percent = (free / total) * 100;
-
-remainingCount.textContent = free;
-progressBar.style.width = `${percent}%`;
-
-if (free <= 10) {
-progressBar.style.backgroundColor = 'red';
-} else if (free <= 50) {
-progressBar.style.backgroundColor = 'orange';
+function togglePixel(pixel) {
+const index = pixel.dataset.index;
+if (pixel.classList.contains('selected')) {
+pixel.classList.remove('selected');
+selectedBlocks = selectedBlocks.filter(i => i !== index);
 } else {
-progressBar.style.backgroundColor = '#c69870'; // eredeti szín
-}
-}
-const pixels = document.querySelectorAll('.pixel:not(.taken)');
-const form = document.getElementById('buy-form');
-const linkInput = form.querySelector('input[type="url"]:first-of-type');
-const imageInput = form.querySelector('input[type="url"]:nth-of-type(2)');
-
-let selectedPixel = null; // Tároljuk melyik pixel van kiválasztva
-
-pixels.forEach(pixel => {
-pixel.addEventListener('click', () => {
-// Ha már volt korábban kiválasztott pixel, távolítsuk el a highlight-ot
-if (selectedPixel) {
-selectedPixel.classList.remove('selected');
-const progressBar = document.getElementById('progress-bar');
-
-function updateRemaining() {
-const total = 32 * 32;
-const reserved = Object.keys(savedPixels).length;
-const free = total - reserved;
-const percent = (free / total) * 100;
-
-remainingCount.textContent = free;
-progressBar.style.width = `${percent}%`;
-
-if (free <= 10) {
-progressBar.style.backgroundColor = 'red';
-} else if (free <= 50) {
-progressBar.style.backgroundColor = 'orange';
-} else {
-progressBar.style.backgroundColor = '#c69870'; // eredeti szín
-}
-
-}
-
-// Jelöld ki az új pixelt
 pixel.classList.add('selected');
-selectedPixel = pixel;
+selectedBlocks.push(index);
+}
+}
 
-// Görgetés és fókusz az űrlapra
-form.scrollIntoView({ behavior: 'smooth' });
-linkInput.focus();
-});
-});
-
-form.addEventListener('submit', (e) => {
+document.getElementById('adForm').addEventListener('submit', function(e) {
 e.preventDefault();
-updateRemaining('Blokk foglalva!');
-alert('Ez csak egy DEMO vásárlás! Az űrlap adatai: \nLink: ' + linkInput.value + '\nKép: ' + imageInput.value);
-});
-});
-function openPopup(content) {
-document.getElementById('popup-content').innerHTML = content;
-document.getElementById('popup').style.display = 'flex';
+if (selectedBlocks.length === 0) {
+alert('Kérlek jelölj ki blokkokat!');
+return;
 }
 
-function closePopup() {
-document.getElementById('popup').style.display = 'none';
+const url = document.getElementById('url').value;
+const logo = document.getElementById('logo').files[0];
+
+if (!url || !logo) {
+alert('Töltsd ki az összes mezőt!');
+return;
 }
+
+selectedBlocks.forEach(index => {
+const block = document.querySelector(`.pixel[data-index='${index}']`);
+block.style.backgroundColor = '#B6A19E';
+block.classList.remove('selected');
+block.onclick = () => window.open(url, '_blank');
+});
+
+availableBlocks -= selectedBlocks.length;
+availableBlockCounter.textContent = availableBlocks;
+selectedBlocks = [];
+document.getElementById('adForm').reset();
+});
