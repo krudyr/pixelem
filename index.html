@@ -3,236 +3,40 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pixel Vásárlás - 32x32 50px-es blokkokkal</title>
-<style>
-:root {
---beige: #efdbc4;
---light-green: #e2e5d8;
---mid-green: #adb795;
---brown: #c69870;
---white: #ffffff;
-}
-
-body {
-background-color: var(--beige);
-margin: 0;
-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-display: flex;
-flex-direction: column;
-align-items: center;
-padding: 20px;
-}
-
-h1, p {
-text-align: center;
-color: #333;
-margin: 10px;
-}
-
-#controls {
-margin: 10px 0;
-text-align: center;
-}
-
-#pixel-grid {
-display: grid;
-grid-template-columns: repeat(32, 50px);
-grid-template-rows: repeat(32, 50px);
-gap: 2px;
-background-color: var(--light-green);
-padding: 10px;
-border-radius: 10px;
-box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-overflow: auto;
-max-width: 100%;
-transform-origin: top left;
-transition: transform 0.3s;
-}
-
-.pixel {
-width: 50px;
-height: 50px;
-background-color: var(--white);
-border: 1px solid var(--light-green);
-cursor: pointer;
-transition: background-color 0.2s;
-}
-
-.pixel:hover {
-background-color: var(--mid-green);
-}
-
-.pixel.selected {
-background-color: var(--brown);
-border: 1px solid var(--mid-green);
-}
-
-#buy-form {
-background: var(--white);
-padding: 20px;
-width: 90%;
-max-width: 400px;
-border-radius: 10px;
-box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-margin-top: 20px;
-text-align: center;
-}
-
-#buy-form input {
-width: 100%;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid var(--light-green);
-border-radius: 5px;
-background-color: var(--light-green);
-}
-
-#buy-form button {
-width: 100%;
-padding: 12px;
-background-color: var(--brown);
-color: var(--white);
-border: none;
-border-radius: 5px;
-font-size: 16px;
-font-weight: bold;
-cursor: pointer;
-transition: background-color 0.3s;
-}
-
-#buy-form button:hover {
-background-color: #a26e49;
-}
-
-#loading {
-position: fixed;
-width: 100%;
-height: 100%;
-background: var(--beige);
-display: flex;
-justify-content: center;
-align-items: center;
-z-index: 9999;
-font-size: 24px;
-color: #666;
-}
-</style>
+<title>Pixel Hirdetés</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div id="loading">Betöltés...</div>
+<header>
+<h1>PIXEL HIRDETÉS</h1>
+<nav>
+<a href="#">Főoldal</a>
+<a href="#">Ismertető</a>
+<a href="#">Kapcsolat</a>
+<span id="blockCount">Szabad blokkok: <span id="availableBlocks">2250</span></span>
+</nav>
+</header>
 
-<h1>Vásárolj egy blokkot!</h1>
-<p>Kattints egy szabad blokkra, majd foglald le a saját linkedet!</p>
+<main>
+<section class="grid-section">
+<h2>Pixel térkép</h2>
+<div id="pixelGrid"></div>
+</section>
 
-<div id="controls">
-<div id="remaining" style="margin: 15px 0; font-size: 20px; font-weight: bold; color: #555;">
-Szabad blokkok: <span id="remaining-count">1024</span>
-</div>
-<div id="progress-container" style="width: 100%; max-width: 600px; background-color: #e2e5d8; border-radius: 10px; overflow: hidden; margin: 10px 0;">
-<div id="progress-bar" style="height: 20px; width: 100%; background-color: #c69870; transition: width 0.5s, background-color 0.5s;"></div>
-</div>
+<section class="form-section">
+<h3>Hirdetés rögzítése</h3>
+<form id="adForm">
+<label for="url">Weboldal URL</label>
+<input type="url" id="url" name="url" required placeholder="https://www.pelda.hu">
 
-<div id="pixel-grid"></div>
+<label for="logo">Logó feltöltése</label>
+<input type="file" id="logo" name="logo" accept="image/*" required>
 
-<form id="buy-form">
-<h2>Vásárlás (DEMO)</h2>
-<input type="url" id="link" placeholder="Link (pl. weboldalad)" required>
-<input type="url" id="image" placeholder="Kép URL (pl. logó)" required>
-<button type="submit">Vásárlás (DEMO)</button>
+<button type="submit">Mentés</button>
 </form>
+</section>
+</main>
 
-<script>
-let zoomLevel = 1;
-
-function zoomIn() {
-zoomLevel += 0.2;
-document.getElementById('pixel-grid').style.transform = `scale(${zoomLevel})`;
-}
-
-function zoomOut() {
-zoomLevel -= 0.2;
-if (zoomLevel < 0.4) zoomLevel = 0.4;
-document.getElementById('pixel-grid').style.transform = `scale(${zoomLevel})`;
-}
-
-function resetZoom() {
-zoomLevel = 1;
-document.getElementById('pixel-grid').style.transform = 'scale(1)';
-}
-
-window.addEventListener('load', () => {
-document.getElementById('loading').style.display = 'none';
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-const grid = document.getElementById('pixel-grid');
-const total = 12 * 12; // 144 pixel
-const savedPixels = JSON.parse(localStorage.getItem('pixels') || '{}');
-let selected = null;
-
-for (let i = 0; i < total; i++) {
-const div = document.createElement('div');
-div.classList.add('pixel');
-div.dataset.index = i;
-
-if (savedPixels[i]) {
-div.style.backgroundImage = `url(${savedPixels[i].image})`;
-div.style.backgroundSize = "cover";
-div.title = savedPixels[i].link;
-div.style.cursor = "pointer";
-div.onclick = () => {
-const pixelData = savedPixels[i];
-const content = `
-<h2>Blokk adatai</h2>
-<img src="${pixelData.image}" alt="Kép" style="max-width:100%; border-radius:10px;">
-<p><strong>Link:</strong> <a href="${pixelData.link}" target="_blank">${pixelData.link}</a></p>
-`;
-openPopup(content);
-};
-} else {
-div.addEventListener('click', () => {
-if (selected) selected.classList.remove('selected');
-div.classList.add('selected');
-selected = div;
-document.getElementById('buy-form').scrollIntoView({ behavior: 'smooth' });
-});
-}
-
-grid.appendChild(div);
-}
-
-const form = document.getElementById('buy-form');
-form.addEventListener('submit', e => {
-e.preventDefault();
-if (!selected) {
-alert('Először válassz ki egy blokkot!');
-return;
-}
-
-const link = document.getElementById('link').value;
-const image = document.getElementById('image').value;
-const index = selected.dataset.index;
-
-savedPixels[index] = { link, image };
-localStorage.setItem('pixels', JSON.stringify(savedPixels));
-
-selected.style.backgroundImage = `url(${image})`;
-selected.style.backgroundSize = "cover";
-selected.title = link;
-selected.classList.remove('selected');
-selected.onclick = () => window.open(link, "_blank");
-selected = null;
-
-form.reset();
-alert('Blokk lefoglalva!');
-});
-});
-</script>
- <div id="popup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); justify-content:center; align-items:center; z-index:10000;">
-<div style="background:white; padding:20px; border-radius:10px; max-width:90%; max-height:90%; overflow:auto; text-align:center; position:relative;">
-<button onclick="closePopup()" style="position:absolute; top:10px; right:10px; background:red; color:white; border:none; padding:5px 10px; border-radius:5px; cursor:pointer;">X</button>
-<div id="popup-content"></div>
-</div>
-</div> 
+<script src="script.js"></script>
 </body>
 </html>
