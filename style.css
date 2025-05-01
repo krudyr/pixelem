@@ -1,139 +1,88 @@
-:root {
---beige: #efdbc4;
---light-green: #e2e5d8;
---mid-green: #adb795;
---brown: #c69870;
---white: #ffffff;
-}
-
 body {
+font-family: sans-serif;
 margin: 0;
-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-background-color: var(--beige);
-color: #4a4a4a;
-text-align: center;
+background-color: #fff;
+color: #333;
 }
 
 header {
-padding: 2rem 1rem 1rem;
+background-color: #6C48BB;
+color: #fff;
+padding: 1rem;
+display: flex;
+justify-content: space-between;
+align-items: center;
+flex-wrap: wrap;
 }
 
-header h1 {
-margin-bottom: 0.5rem;
-color: #5c4433;
-}
-
-header p {
-margin-top: 0;
-color: #5c4433;
-font-weight: 500;
+nav {
+display: flex;
+gap: 1rem;
+flex-wrap: wrap;
 }
 
 main {
 display: flex;
-flex-direction: column;
-align-items: center;
-margin: 2rem auto;
+flex-wrap: wrap;
+padding: 1rem;
+gap: 2rem;
+justify-content: center;
 }
 
-#pixel-grid {
+.grid-section {
+flex: 1 1 600px;
+}
+
+#pixelGrid {
 display: grid;
-grid-template-columns: repeat(10, 20px);
-grid-template-rows: repeat(10, 20px);
-gap: 2px;
-background-color: var(--light-green);
-padding: 10px;
-border-radius: 10px;
-box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+grid-template-columns: repeat(50, 12px);
+grid-template-rows: repeat(45, 12px);
+gap: 1px;
+background-color: #ccc;
 }
 
 .pixel {
-width: 20px;
-height: 20px;
-background-color: var(--white);
-border: 1px solid var(--light-green);
+width: 12px;
+height: 12px;
+background-color: white;
+border: 1px solid #ddd;
 cursor: pointer;
-transition: background-color 0.2s;
 }
 
-.pixel:hover {
-background-color: var(--mid-green);
-}
-
-.pixel.taken {
-background-color: var(--mid-green);
-cursor: not-allowed;
-}
-
-form#buy-form {
-background: var(--white);
-margin-top: 2rem;
-padding: 20px;
-width: 90%;
-max-width: 400px;
-border-radius: 10px;
-box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-form#buy-form h2 {
-margin-bottom: 20px;
-color: #5c4433;
-}
-
-form#buy-form input {
-width: 100%;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid var(--light-green);
-border-radius: 5px;
-background-color: var(--light-green);
-}
-
-form#buy-form button {
-width: 100%;
-padding: 12px;
-background-color: var(--brown);
-color: var(--white);
-border: none;
-border-radius: 5px;
-font-size: 16px;
-font-weight: bold;
-cursor: pointer;
-transition: background-color 0.3s;
-}
-
-form#buy-form button:hover {
-background-color: #a26e49;
-}
-
-form#buy-form a {
-display: block;
-margin-top: 10px;
-color: var(--brown);
-text-decoration: none;
-font-weight: 500;
-}
-
-form#buy-form a:hover {
-text-decoration: underline;
-}
 .pixel.selected {
-background-color: var(--brown) !important;
-animation: pulse 0.6s ease-out;
-border: 2px solid var(--mid-green);
+background-color: #6BAAA7;
 }
 
-@keyframes pulse {
-0% {
-transform: scale(1);
-background-color: var(--brown);
+.form-section {
+flex: 1 1 300px;
+background-color: #FBA100;
+padding: 1rem;
+border-radius: 5px;
 }
-50% {
-transform: scale(1.2);
-background-color: #b07d5d; /* Kicsit világosabb barna */
+
+form {
+display: flex;
+flex-direction: column;
 }
-100% {
-transform: scale(1);
-background-color: var(--brown);
+
+form input, form button {
+margin-top: 10px;
+padding: 8px;
+}
+
+button {
+background-color: #6C48BB;
+color: white;
+border: none;
+cursor: pointer;
+}
+
+@media (max-width: 768px) {
+main {
+flex-direction: column;
+}
+
+#pixelGrid {
+grid-template-columns: repeat(25, 12px);
 }
 }
